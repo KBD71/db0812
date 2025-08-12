@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap');
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f0f2f5; }
+        .keyword { background-color: #eef2ff; color: #4338ca; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+        .card { background-color: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); margin-bottom: 2rem; overflow: hidden; transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+        .card-content { padding: 2.5rem; }
+        .icon-wrapper { display: flex; align-items: center; justify-content: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; margin-right: 1.5rem; flex-shrink: 0; }
+        .icon-wrapper svg { width: 2rem; height: 2rem; color: white; }
+        .bible-passage p { font-family: 'Noto Serif KR', serif; font-size: 1.1rem; line-height: 1.8; color: #374151; margin-bottom: 0.5rem; }
+        .bible-passage p b { color: #b45309; margin-right: 0.5rem; }
+        h1.main-title { font-family: 'Noto Serif KR', serif; font-weight: 700; letter-spacing: -0.025em; color: #111827; }
+        blockquote { border-left: 4px solid #6366f1; padding-left: 1rem; margin: 1.5rem 0; font-style: italic; color: #4b5563; font-size: 1.1rem; font-weight: 500; }
+        .def-list dt { font-weight: 700; color: #1e3a8a; display: flex; align-items: center; margin-bottom: 0.5rem; }
+        .def-list dt svg { width: 1.25rem; height: 1.25rem; margin-right: 0.5rem; color: #4f46e5; }
+        .def-list dd { margin-left: 2rem; margin-bottom: 1.25rem; color: #374151; padding-left: 0.25rem; border-left: 2px solid #e0e7ff; }
+        #hidden-player-container {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+    </style>
+    <title>순이라 불리는 대제사장, 평화의 왕</title>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto max-w-4xl p-4 md:p-8">
+        <header class="text-center mb-16">
+            <h1 class="main-title text-4xl">순이라 불리는 대제사장, 평화의 왕</h1>
+            <p class="sermon-date text-lg text-gray-500 mt-4 mb-6">2024년 8월 12일</p>
+            <p class="text-2xl text-indigo-700 font-semibold leading-relaxed">예수 그리스도께서 왕과 제사장의 직분을 겸하여 평화의 언약을 성취하고, 이방인까지 포함하는 영적 성전을 세우실 것을 예표합니다.</p>
+            <div class="mt-8">
+                <button id="listen-btn" class="bg-indigo-600 text-white font-bold py-2 px-6 rounded-full hover:bg-indigo-700 transition-colors duration-300 flex items-center justify-center mx-auto" disabled>
+                    <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor" style="display:none;">
+                      <path d="M18 3a1 1 0 00-1.447-.894L4 8.434V6a1 1 0 00-2 0v8a1 1 0 002 0v-2.434l12.553 6.328A1 1 0 0018 17V3z" />
+                    </svg>
+                    <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor" style="display:none;">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clip-rule="evenodd" />
+                    </svg>
+                    <svg id="loading-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 animate-spin" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 102 0V6z" clip-rule="evenodd" />
+                    </svg>
+                    <span id="button-text">로딩 중...</span>
+                </button>
+            </div>
+        </header>
+        <main>
+            <div class="card">
+                <div class="card-content">
+                    <div class="flex items-center mb-8">
+                        <div class="icon-wrapper bg-amber-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6-2.292m0 0A9.043 9.043 0 0 1 12 6.042"></path></svg>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-800">오늘의 말씀: 스가랴 6장 9-15절</h2>
+                    </div>
+                    <div class="bible-passage">
+                        <p><b>9</b> 여호와의 말씀이 내게 임하여 이르시되</p>
+                        <p><b>10</b> 사로잡힌 자 중 바벨론에서부터 돌아온 헬대와 도비야와 여다야가 스바냐의 아들 요시아의 집에 들어갔나니 너는 이 날에 그 집에 들어가서 그들에게서 받되</p>
+                        <p><b>11</b> 은과 금을 받아 면류관을 만들어 여호사닥의 아들 대제사장 여호수아의 머리에 씌우고</p>
+                        <p><b>12</b> 말하여 이르기를 만군의 여호와께서 이같이 말씀하시되 보라 <span class="keyword">순</span>이라 이름하는 사람이 자기 곳에서 돋아나서 여호와의 전을 건축하리라</p>
+                        <p><b>13</b> 그가 여호와의 전을 건축하고 영광도 얻고 그 자리에 앉아서 다스릴 것이요 또 제사장이 자기 자리에 있으리니 이 둘 사이에 평화의 의논이 있으리라 하셨다 하고</p>
+                        <p><b>14</b> 그 면류관은 헬렘과 도비야와 여다야와 스바냐의 아들 헨을 기념하기 위하여 여호와의 전 안에 두라 하시니라</p>
+                        <p><b>15</b> 먼 데 사람들이 와서 여호와의 전을 건축하리니 만군의 여호와께서 나를 너희에게 보내신 줄을 너희가 알리라 너희가 만일 너희의 하나님 여호와의 말씀을 들을진대 이같이 되리라</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <div class="flex items-center mb-8">
+                        <div class="icon-wrapper bg-sky-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.852l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"></path></svg>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-800">본문 이해를 위한 배경지식</h2>
+                    </div>
+                    <dl class="def-list">
+                        <dt>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg>
+                            '순(Tzemach)' 이란?
+                        </dt>
+                        <dd>
+                            구약 성경에서 <span class="keyword">메시아</span>를 가리키는 중요한 명칭입니다. 이사야(4:2)와 예레미야(23:5, 33:15)에서 사용되었으며, 다윗의 왕조가 끊어진 듯한 상황에서 새롭게 돋아날 왕, 즉 생명과 희망의 통치자를 상징합니다. 스가랴는 이 '순'이 바로 여호와의 전을 건축할 인물이라고 예언하며 <span class="keyword">메시아</span>의 정체성을 분명히 합니다.
+                        </dd>
+                        <dt>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg>
+                             왕관을 쓴 대제사장
+                        </dt>
+                        <dd>
+                            이스라엘 역사에서 왕(유다 지파)과 제사장(레위 지파)의 직분은 엄격히 분리되었습니다. 사울 왕이나 웃시야 왕이 제사장의 직무를 침범했을 때 하나님의 심판을 받았습니다. 그러나 본문에서는 <span class="keyword">대제사장</span> 여호수아의 머리에 왕을 상징하는 면류관을 씌웁니다. 이는 장차 오실 <span class="keyword">메시아</span> 한 분 안에서 왕의 통치권과 제사장의 중보권이 완전하게 연합될 것을 보여주는 파격적이고 상징적인 예언입니다.
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <div class="flex items-center mb-8">
+                        <div class="icon-wrapper bg-purple-600">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"></path></svg>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-800">설교의 핵심 1: 왕이신 대제사장, 메시아의 예표</h2>
+                    </div>
+                    <p class="text-lg leading-relaxed mb-6">
+                        하나님께서는 바벨론 포로에서 돌아온 자들의 헌신(은과 금)으로 면류관을 만들어 대제사장 여호수아의 머리에 씌우라고 명령하십니다. 이 행위는 단순히 여호수아를 높이는 것이 아니라, 장차 오실 완전한 지도자에 대한 예언적 행동입니다. 그분은 '순'이라 불리는 <span class="keyword">메시아</span>, 예수 그리스도이십니다.
+                    </p>
+                    <blockquote>
+                        "그가 여호와의 전을 건축하고 영광도 얻고 그 자리에 앉아서 다스릴 것이요 또 제사장이 자기 자리에 있으리니 이 둘 사이에 평화의 의논이 있으리라" (13절)
+                    </blockquote>
+                    <p class="text-lg leading-relaxed">
+                        여호수아는 <span class="keyword">메시아</span>의 그림자로서 왕관을 썼습니다. 이는 그리스도께서 다윗의 보좌에 앉아 다스리실 '왕'이시며, 동시에 자기 백성의 죄를 위해 영원한 속죄를 이루시고 중보하시는 '대제사장'이심을 강력하게 선포합니다. 분리되었던 두 직분이 그리스도 안에서 하나가 되어 '평화의 의논', 즉 하나님과 인간 사이의 화평을 이루는 언약을 성취하십니다.
+                    </p>
+                </div>
+            </div>
+
+             <div class="card">
+                <div class="card-content">
+                    <div class="flex items-center mb-8">
+                        <div class="icon-wrapper bg-indigo-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 1.5m-5-1.5l1 1.5m0 0l.5 1.5m.5-1.5l.5 1.5m0 0l.5 1.5m1-1.5l.5 1.5m0 0l.5 1.5m-1.5-.5l.5 1.5m0 0l.5 1.5m0 0l.5 1.5m0 0l.5 1.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-800">설교의 핵심 2: 이방인을 포함하는 영적 성전 건축</h2>
+                    </div>
+                    <p class="text-lg leading-relaxed mb-6">
+                        '순'이신 <span class="keyword">메시아</span>의 핵심 사역은 '여호와의 전을 건축하는 것'입니다. 스룹바벨과 여호수아가 재건하던 물리적인 성전은 그림자에 불과했습니다. 진짜 성전은 예수 그리스도께서 자신의 몸을 통해 세우시는 영적인 공동체, 즉 교회입니다.
+                    </p>
+                    <blockquote>
+                        "먼 데 사람들이 와서 여호와의 전을 건축하리니... 너희가 만일 너희의 하나님 여호와의 말씀을 들을진대 이같이 되리라" (15절)
+                    </blockquote>
+                    <p class="text-lg leading-relaxed">
+                        이 예언의 놀라운 점은 '먼 데 사람들', 즉 이방인들이 성전 건축에 동참할 것을 명시했다는 것입니다. 유대인 중심의 구원관을 넘어, 온 열방이 그리스도께 나아와 함께 하나님의 집을 이루게 될 것을 보여줍니다. 이 예언은 오순절 성령 강림 이후, 복음이 예루살렘과 유대를 넘어 온 세상으로 퍼져나가며 성취되었습니다. 이 위대한 구원 계획은 오직 하나님의 말씀을 듣고 순종하는 자들을 통해 이루어집니다.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <div class="flex items-center mb-8">
+                        <div class="icon-wrapper bg-emerald-600">
+                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.572L16.5 21.75l-.398-1.178a3.375 3.375 0 00-2.3-2.3L12.75 18l1.178-.398a3.375 3.375 0 002.3-2.3L16.5 14.25l.398 1.178a3.375 3.375 0 002.3 2.3l1.178.398-1.178.398a3.375 3.375 0 00-2.3 2.3z"></path></svg>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-800">결론: 우리 삶에 주시는 교훈</h2>
+                    </div>
+                    <p class="text-lg leading-relaxed mb-4">
+                        스가랴의 예언은 예수 그리스도 안에서 온전히 성취되었습니다. 우리는 과거 '먼 데 있던' 이방인이었으나, 이제 그리스도의 보혈로 가까워져 하나님의 권속이요 영적 성전의 일부가 되었습니다.
+                    </p>
+                    <ul class="list-disc list-inside text-lg leading-relaxed space-y-3">
+                        <li><b>우리의 왕과 대제사장이신 그리스도를 신뢰하십시오.</b> 그분은 우리를 다스리시며 동시에 우리를 위해 영원히 중보하십니다. 그분의 통치 아래서 참된 평화와 안식을 누릴 수 있습니다.</li>
+                        <li><b>성전의 지체로서 함께 지어져 가십시오.</b> 교회는 그리스도를 머리로 한 유기적인 몸입니다. 우리는 각자에게 주어진 은사로 서로를 섬기며 함께 거룩한 성전으로 세워져 가야 할 책임이 있습니다.</li>
+                        <li><b>하나님의 말씀에 순종함으로 건축에 동참하십시오.</b> "여호와의 말씀을 들을진대 이같이 되리라"는 약속을 기억해야 합니다. 순종은 우리가 하나님의 위대한 구원 역사에 참여하는 통로입니다.</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div id="hidden-player-container"></div>
+    <script>
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        const videoId = 'JLQP8Y0J1r0';
+        
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('hidden-player-container', {
+                height: '1',
+                width: '1',
+                videoId: videoId,
+                playerVars: {
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        const listenBtn = document.getElementById('listen-btn');
+        const buttonText = document.getElementById('button-text');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        const loadingIcon = document.getElementById('loading-icon');
+
+        function onPlayerReady(event) {
+            listenBtn.disabled = false;
+            loadingIcon.style.display = 'none';
+            playIcon.style.display = 'inline-block';
+            buttonText.textContent = '설교 듣기';
+        }
+
+        let isPlaying = false;
+        function togglePlay() {
+            if (isPlaying) {
+                player.pauseVideo();
+            } else {
+                player.playVideo();
+            }
+        }
+
+        listenBtn.addEventListener('click', togglePlay);
+
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING) {
+                isPlaying = true;
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'inline-block';
+                buttonText.textContent = '일시 정지';
+            } else {
+                isPlaying = false;
+                pauseIcon.style.display = 'none';
+                playIcon.style.display = 'inline-block';
+                buttonText.textContent = '설교 듣기';
+            }
+        }
+    </script>
+</body>
+</html>
